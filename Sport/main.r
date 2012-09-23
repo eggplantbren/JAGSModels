@@ -11,7 +11,7 @@ m = jags.model(file = "model.txt", data=data)
 # update(m, 10000) # I found it runs really quickly...
 
 # finally, get the samples from JAGS:
-draw = coda.samples(m, 1000000, thin=10, variable.names = c("ability", "prob[1]"))
+draw = coda.samples(m, 100000, thin=10, variable.names = c("ability", "prob[1]"))
 
 # and get a pretty picture and summary stats:
 #plot(draw); summary(draw)
