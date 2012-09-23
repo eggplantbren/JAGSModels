@@ -16,6 +16,6 @@ model
 		winner[i] ~ dbin(prob[i], 1)
 	}
 
-	prob_next <- ability[2]/(ability[1] + ability[2])
+	prob_next <- ability[8]/(ability[6] + ability[8])
 }
 
