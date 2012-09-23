@@ -1,0 +1,21 @@
+model
+{
+	# Prior on team abilities
+	# Lognormal given a diversity
+	sig ~ dunif(0.0, 2.0)
+	tau <- pow(sig, -2.0)
+	for(i in 1:3)
+	{
+		log_ability[i] ~ dnorm(0.0, tau)
+		ability[i] <- exp(log_ability[i])
+	}
+
+	for(i in 1:N)
+	{
+		prob[i] <- ability[team1[i]]/(ability[team0[i]] + ability[team1[i]])		
+		winner[i] ~ dbin(prob[i], 1)
+	}
+
+	prob_next <- ability[2]/(ability[1] + ability[2])
+}
+

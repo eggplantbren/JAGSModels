@@ -1,0 +1,8 @@
+# team0 = ID of team 0
+# team1 = ID of team 1
+# winner = which team won the match (0 for team0 or 1 for team1)
+list(	team0=c(1), 
+	team1=c(2),
+	winner=c(0),
+	N=1)
+
