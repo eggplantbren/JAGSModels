@@ -1,0 +1,31 @@
+model
+{
+	# Likelihood. Probability model for data given parameters
+	for(i in 1:N1)
+	{
+		x1[i] ~ dnorm(mu1, tau)
+	}
+	for(i in 1:N2)
+	{
+		x2[i] ~ dnorm(mu2, tau)
+	}
+
+	# Priors for the parameters
+	log_sig ~ dunif(-10.0, 10.0)
+	mu1 ~ dnorm(grand_mean, tau_diversity)
+	mu2 ~ dnorm(grand_mean, tau_diversity)
+
+	# Priors for the hyperparameters
+	grand_mean ~ dnorm(0.0, 1.0E-6)
+	log_diversity ~ dunif(-10.0, 10.0)
+
+	# Transformed versions of stuff
+	# Needed for dnorm()
+	sig <- exp(log_sig)
+	tau <- pow(sig, -2.0)
+	diversity <- exp(log_diversity)
+	tau_diversity <- pow(diversity, -2.0)	
+
+}
+
+
