@@ -1,0 +1,26 @@
+# This one has home-ground advantage!!
+
+model
+{
+	# Home ground advantage factor
+	advantage ~ dunif(1.0, 2.0)
+
+	# Prior on team abilities
+	# Lognormal given a diversity
+	sig ~ dunif(0.0, 2.0)
+	tau <- pow(sig, -2.0)
+	for(i in 1:nTeams)
+	{
+		log_ability[i] ~ dnorm(0.0, tau)
+		ability[i] <- exp(log_ability[i])
+	}
+
+	for(i in 1:N)
+	{
+		prob[i] <- ability[team1[i]]/(advantage*ability[team0[i]] + ability[team1[i]])		
+		winner[i] ~ dbin(prob[i], 1)
+	}
+
+	prob_next <- advantage*ability[8]/(ability[6] + advantage*ability[8])
+}
+
