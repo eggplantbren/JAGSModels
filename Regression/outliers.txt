@@ -1,0 +1,21 @@
+model
+{
+	bad_fraction ~ dbeta(0.5, 0.5)
+	log_sig_good ~ dunif(-10.0, 10.0)
+	log_sig_bad ~ dunif(log_sig_good, log_sig_good + 10.0)
+
+	beta0 ~ dnorm(0.0, 1.0E-6)
+	beta1 ~ dnorm(0.0, 1.0E-6)
+	for(i in 1:N)
+	{
+		bad[i] ~ dbin(bad_fraction, 1)
+		log_sig[i] <- log_sig_good + (log_sig_bad - log_sig_good)*step(bad[i] - 0.5)
+		sig[i] <- exp(log_sig[i])
+		tau[i] <- pow(sig[i], -2)
+
+		mu[i] <- beta0 + beta1*x[i]
+		y[i] ~ dnorm(mu[i], tau[i])
+	}
+}
+
+
