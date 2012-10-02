@@ -1,27 +1,25 @@
 model
 {
-	mean ~ dunif(-100.0, 100.0)
-	alpha ~ dunif(0.0, 1.0)
+	mu ~ dnorm(0.75, 1.0)
+	log_timescale ~ dunif(-10.0, 10.0)
+	timescale <- exp(log_timescale)
+	alpha <- exp(-1.0/timescale)
+
 	log_sig ~ dunif(-10.0, 10.0)
 	sig <- exp(log_sig)
 	tau <- pow(sig, -2)
 
-	y[1] ~ dnorm(0.0, 1.0E-6)
-
 	for(i in 2:N)
 	{
-		mu[i] <- mean + alpha*(y[i-1] - mean)
-		y[i] ~ dnorm(mu[i], tau)
+		mean[i] <- mu + alpha*(y[i-1] - mu)
+		y[i] ~ dnorm(mean[i], tau)
 	}
 
-	mu_future[1] <- mean + alpha*(y[N] - mean)
-	y_future[1] ~ dnorm(mu_future[1], tau)
-	for(i in 2:100)
+	y_future[1] <- y[N]
+	for(i in 2:1000)
 	{
-		mu_future[i] <- mean + alpha*(y_future[i-1] - mean)
-		y_future[i] ~ dnorm(mu_future[i], tau)
+		mean_future[i] <- mu + alpha*(y_future[i-1] - mu)
+		y_future[i] ~ dnorm(mean_future[i], tau)
 	}
 
 }
-
-
