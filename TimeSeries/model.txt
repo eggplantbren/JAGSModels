@@ -1,11 +1,11 @@
 model
 {
-	mu ~ dnorm(0.75, 1.0)
-	log_timescale ~ dunif(-10.0, 10.0)
-	timescale <- exp(log_timescale)
-	alpha <- exp(-1.0/timescale)
-
+	mu ~ dnorm(0.75, 100.0)
+	log_L ~ dunif(-10.0, 10.0)
 	log_sig ~ dunif(-10.0, 10.0)
+
+	L <- exp(log_L)
+	alpha <- exp(-1.0/L)
 	sig <- exp(log_sig)
 	tau <- pow(sig, -2)
 
